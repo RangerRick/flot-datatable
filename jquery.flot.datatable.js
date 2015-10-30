@@ -75,7 +75,9 @@ function init(plot) {
             return;
         }
 
-        var tabplace = $('<div class="tabplace" style="width: '+placeholder[0].clientWidth+'px;"><div class="tab" id="graphTab">Graph</div><div class="tab" id="dataTab">Data</div></div>');
+        // Example CSS: .tab { display: inline; border: 1px solid black; border-bottom: 0; padding: 2px 5px 2px 5px; margin-left: 3px; border-radius: 4px 4px 0 0; cursor: pointer; } .tab:hover { background-color: #DDDDDD; }
+
+        var tabplace = $('<div class="tabplace" style="width:'+placeholder[0].clientWidth+'px;padding-left:'+(placeholder[0].clientWidth-101)+'px;"><div class="tab" id="graphTab">Graph</div><div class="tab" id="dataTab">Data</div></div>');
         var T = $('<div title="Doubleclick to copy" class="tdata" style="width: '+placeholder[0].clientWidth+'px; height: '+placeholder[0].clientHeight+'px; padding: 0px; position: relative; overflow: scroll; background: white; z-index: 10; display: none;">' +
             createTable(plot.getData(), plot.getOptions()) +
             '</div>');
