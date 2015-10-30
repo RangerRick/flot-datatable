@@ -4,8 +4,6 @@ describe('jquery.flot.datatable', function () {
         it('should generate the appropriate html', function() {
             var allSeries = [
                 {
-                    metric: 'xx',
-                    id: 'xx',
                     xaxis: {
                         options: {
 
@@ -17,11 +15,15 @@ describe('jquery.flot.datatable', function () {
                         }
                     },
                     data: [[0, 100], [1, 101]]
+                },
+                {
+                    label: 'watts',
+                    data: [[0, 1], [1, 2]]
                 }
             ];
 
-            var tableHtml = createTable(allSeries, d3.format(".2f"), d3.format(".2f"));
-            expect(tableHtml).toBe("<table><tr><th>x</th><th>y0</th></tr><tr><th>0.00</th><td>100.00</td></tr><tr><th>1.00</th><td>101.00</td></tr></table>");
+            var tableHtml = createTable(allSeries, options);
+            expect(tableHtml).toBe('<table style="width: 100%"><tr><th align="left">X</th><th align="left">Y0</th><th align="left">watts</th></tr><tr><td nowrap>0.00</td><td nowrap>100.00</td><td nowrap>1.00</td></tr><tr><td nowrap>1.00</td><td nowrap>101.00</td><td nowrap>2.00</td></tr></table>');
         });
     });
 
