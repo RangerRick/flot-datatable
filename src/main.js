@@ -1,15 +1,3 @@
-// Initial implementation by Andrew Hudik (2015)
-(function ($) {
- "use strict";
-var options = {
-    datatable: {
-        format: {
-            x: d3.format(".2f"),
-            y: d3.format(".2f")
-        }
-    }
-};
-
 function init(plot) {
 
     plot.makeTableHolder = function(){
@@ -95,12 +83,3 @@ function init(plot) {
 
     }
 }
-
-
-    $.plot.plugins.push({
-        init: init,
-        options: options,
-        name: 'datatable',
-        version: '1.0.0'
-    });
-})(jQuery);
