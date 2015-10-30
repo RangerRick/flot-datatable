@@ -12,6 +12,7 @@
     "grunt-contrib-concat": "~0.5.1",
     "karma": "~0.13.11",
     "karma-jasmine": "~0.3.6",
+    "jasmine-core": "~2.3.4",
     "karma-phantomjs-launcher": "~0.2.1",
     "bower": "~1.6.3"
   },
