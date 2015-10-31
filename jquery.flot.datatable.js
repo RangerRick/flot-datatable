@@ -94,7 +94,9 @@ function init(plot) {
         // Copy the placeholder's style and classes to our newly created wrapper
         placeholder.parent()
             .attr('class', placeholder.attr('class'))
-            .attr('style', placeholder.attr('style'));
+            .attr('style', placeholder.attr('style'))
+            // Remove the height attribute
+            .css("height", "");
 
         var checkbox = panel.find(":checkbox");
         var table = panel.find("table");
@@ -148,6 +150,6 @@ function init(plot) {
         init: init,
         options: options,
         name: 'datatable',
-        version: '1.0.2'
+        version: '1.0.3'
     });
 })(jQuery);
