@@ -3,6 +3,6 @@
         init: init,
         options: options,
         name: 'datatable',
-        version: '1.0.2'
+        version: '1.0.3'
     });
 })(jQuery);
