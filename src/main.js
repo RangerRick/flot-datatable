@@ -58,21 +58,26 @@ function init(plot) {
 
     plot.hooks.drawOverlay.push(function (plot) {
         var placeholder = plot.getPlaceholder();
-        // Render the tabs on the first call
+        // Only render the tabs on the first call
         if (placeholder.parent().find("#dataTab").length > 0) {
             return;
         }
 
-        var tabplace = $('<div class="tabplace" style="width:' + placeholder[0].clientWidth + 'px;padding-left:' + (placeholder[0].clientWidth - 101) + 'px;"><div class="flot-datatable-tab" id="graphTab">Graph</div><div class="flot-datatable-tab" id="dataTab">Data</div></div>');
-        var panel = $('<div title="Doubleclick to copy" class="tdata" style="width: ' + placeholder[0].clientWidth + 'px; height: ' + placeholder[0].clientHeight + 'px; padding: 0px; position: relative; overflow: scroll; background: white; z-index: 10; display: none;">' +
+        var tabs = $('<div class="flot-datatable-tabs" align="right"><div class="flot-datatable-tab" id="graphTab">Graph</div><div class="flot-datatable-tab" id="dataTab">Data</div></div>');
+        var panel = $('<div title="Doubleclick to copy" class="flot-datatable-data" style="width: ' + placeholder[0].clientWidth + 'px; height: ' + placeholder[0].clientHeight + 'px; padding: 0px; position: relative; overflow: scroll; background: white; z-index: 10; display: none; text-align: left;">' +
             '<input type="checkbox" name="raw" value="raw">Raw values<br>' +
             '<table style="width: 100%"></table>' +
             '</div>');
 
-        $(placeholder)
-            .wrap("<div class='wrapper'></div>")
-            .before(tabplace)
+        // Wrap the placeholder in an outer div and prepend the tabs
+        placeholder.wrap("<div></div>")
+            .before(tabs)
             .append(panel);
+
+        // Copy the placeholder's style and classes to our newly created wrapper
+        placeholder.parent()
+            .attr('class', placeholder.attr('class'))
+            .attr('style', placeholder.attr('style'));
 
         var checkbox = panel.find(":checkbox");
         var table = panel.find("table");
@@ -82,7 +87,7 @@ function init(plot) {
         };
         redrawTable();
 
-        bindTabs(tabplace, panel);
+        bindTabs(tabs, panel);
         bindCheckbox(checkbox, redrawTable);
         bindTable(table);
     });
