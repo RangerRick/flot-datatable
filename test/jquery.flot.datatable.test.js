@@ -23,7 +23,7 @@ describe('jquery.flot.datatable', function () {
             ];
 
             var tableHtml = createTable(allSeries, options);
-            expect(tableHtml).toBe('<tr><th align="left">X</th><th align="left">Y0</th><th align="left">watts</th></tr><tr><td nowrap>0.00</td><td nowrap>100.00</td><td nowrap>1.00</td></tr><tr><td nowrap>1.00</td><td nowrap>101.00</td><td nowrap>2.00</td></tr>');
+            expect(tableHtml).toBe('<tr><th align="left">X</th><th align="left">Y0</th><th align="left">watts</th></tr><tr><td nowrap>1.00</td><td nowrap>101.00</td><td nowrap>2.00</td></tr><tr><td nowrap>0.00</td><td nowrap>100.00</td><td nowrap>1.00</td></tr>');
         });
     });
 
