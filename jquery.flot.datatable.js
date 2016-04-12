@@ -40,7 +40,7 @@ function createTable(allSeries, options, useRawValues) {
 
     var T = '<tr><th align="left">' + getLabelForXAxis(allSeries[0], options) + '</th>',
         t = '',
-        i, j, N, M;
+        i, j, N, M, xvalue, yvalue;
 
     for (j = 0, N = allSeries.length; j < N; j++) {
         if (allSeries[j].nodatatable) {
@@ -51,12 +51,14 @@ function createTable(allSeries, options, useRawValues) {
 
     T += '</tr>';
     for (N = allSeries[0].data.length, i = N-1; i >= 0; i--) {      // for each x
-        t = '<tr><td nowrap>' + xformat(allSeries[0].data[i][0]) + '</td>';    // 1st colunm, x-value
+        xvalue = (allSeries[0].data[i] && allSeries[0].data[i].length == 2)? allSeries[0].data[i][0] : null;
+        t = '<tr><td nowrap>' + xformat(xvalue) + '</td>';    // 1st colunm, x-value
         for (j = 0, M = allSeries.length; j < M; j++) {         // for each series
             if (allSeries[j].nodatatable) {
                 continue;
             }
-            t += '<td nowrap>' + yformat(allSeries[j].data[i][1]) + '</td>'; // add y-data
+            yvalue = (allSeries[j].data[i] && allSeries[j].data[i].length == 2)? allSeries[j].data[i][1] : null;
+            t += '<td nowrap>' + yformat(yvalue) + '</td>'; // add y-data
         }
         t += '</tr>';
         T += t;
@@ -68,21 +70,27 @@ function createTable(allSeries, options, useRawValues) {
 function init(plot) {
 
     // Add the styles
-    var css = document.createElement("style");
-    css.type = "text/css";
-    css.innerHTML = ".flot-datatable-tab { display: inline; border: 1px solid black; border-bottom: 0; padding: 2px 5px 2px 5px; margin-left: 3px; border-radius: 4px 4px 0 0; cursor: pointer; } .flot-datatable-tab:hover { background-color: #DDDDDD; }";
-    document.head.insertBefore(css, document.head.firstChild);
+    var css = document.getElementById("#jquery-flot-datatable-style");
+    if (!css) {
+        css = document.createElement("style");
+        css.setAttribute("id", "jquery-flot-datatable-style");
+        css.setAttribute("type", "text/css");
+        css.innerHTML = ".flot-datatable-tab { display: inline; border: 1px solid black; border-bottom: 0; padding: 2px 5px 2px 5px; margin-left: 3px; border-radius: 4px 4px 0 0; cursor: pointer; } .flot-datatable-tab:hover { background-color: #DDDDDD; }";
+        document.head.insertBefore(css, document.head.firstChild);
+    }
 
-    plot.hooks.drawOverlay.push(function (plot) {
+    plot.hooks.drawOverlay.push(drawOverlay);
+
+    function drawOverlay(plot) {
         var placeholder = plot.getPlaceholder();
 
         var tabsAlreadyRendered = false;
-        var panel, tabs = placeholder.parent().find("#dataTab");
+        var panel, tabs = placeholder.parent().find("#jquery-flot-datatable-tab");
         if (tabs.length > 0) {
             tabsAlreadyRendered = true;
             panel = placeholder.parent().find(".flot-datatable-data");
         } else {
-            tabs = $('<div class="flot-datatable-tabs" align="right"><div class="flot-datatable-tab" id="graphTab">Graph</div><div class="flot-datatable-tab" id="dataTab">Data</div></div>');
+            tabs = $('<div class="flot-datatable-tabs" align="right"><div class="flot-datatable-tab" id="jquery-flot-graph-tab">Graph</div><div class="flot-datatable-tab" id="jquery-flot-datatable-tab">Data</div></div>');
             panel = $('<div title="Doubleclick to copy" class="flot-datatable-data" style="width: ' + placeholder[0].clientWidth + 'px; height: ' + placeholder[0].clientHeight + 'px; padding: 0px; position: relative; overflow: scroll; background: white; z-index: 10; display: none; text-align: left;">' +
                 '<input type="checkbox" name="raw" value="raw">Raw values<br>' +
                 '<table style="width: 100%"></table>' +
@@ -114,16 +122,16 @@ function init(plot) {
         bindTabs(tabs, panel, placeholder);
         bindCheckbox(checkbox, redrawTable);
         bindTable(table);
-    });
+    };
 
     function bindTabs(tabs, table, placeholder) {
         tabs.click(function (e) {
             switch (e.target.id) {
-                case 'graphTab':
+                case 'jquery-flot-graph-tab':
                     table.hide();
                     placeholder.show();
                     break;
-                case 'dataTab':
+                case 'jquery-flot-datatable-tab':
                     placeholder.hide();
                     table.show();
                     break;
@@ -157,6 +165,6 @@ function init(plot) {
         init: init,
         options: options,
         name: 'datatable',
-        version: '1.0.3'
+        version: '1.0.5'
     });
 })(jQuery);
