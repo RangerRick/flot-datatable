@@ -63,8 +63,26 @@ function init(plot) {
     }
 
     plot.hooks.drawOverlay.push(drawOverlay);
+    plot.hooks.shutdown.push(shutdown);
 
-    function drawOverlay(plot) {
+    function shutdown(plot) {
+        var tabs = $('.flot-datatable-tabs');
+        tabs.unbind();
+        tabs.remove();
+
+        var panel = $('.flot-datatable-data');
+        panel.unbind();
+        panel.find(':checkbox').unbind();
+
+        var table = panel.find('table');
+        table.unbind();
+
+        panel.remove();
+
+        plot.getPlaceholder().unwrap();
+    }
+
+    function drawOverlay(plot, ctx) {
         var placeholder = plot.getPlaceholder();
 
         var tabsAlreadyRendered = false;
