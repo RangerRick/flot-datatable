@@ -131,6 +131,7 @@ function init(plot) {
                 case 'jquery-flot-graph-tab':
                     table.hide();
                     placeholder.show();
+                    plot.draw();
                     break;
                 case 'jquery-flot-datatable-tab':
                     placeholder.hide();
