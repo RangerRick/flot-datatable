@@ -43,11 +43,11 @@ describe('jquery.flot.datatable', function () {
             $(div.node()).width(640).height(480);
         });
 
-        it('should render a canvas and the data/graph tabs', function() {
+        it('should render a canvas and the data/graph tabs', function(done) {
             $.plot(div.node(), series);
 
             setTimeout(function(){
-                var html = "" + div.node().innerHTML;
+                var html = $(div.node()).parent().html();
                 expect(html).toContain("canvas");
                 expect(html).toContain("graphTab");
                 expect(html).toContain("dataTab");
