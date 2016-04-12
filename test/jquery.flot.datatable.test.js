@@ -28,7 +28,7 @@ describe('jquery.flot.datatable', function () {
     });
 
     describe('flot integration', function() {
-        var div;
+        var div, page, p;
 
         var series = [
             {
@@ -40,20 +40,50 @@ describe('jquery.flot.datatable', function () {
 
         beforeEach(function () {
             div = d3.select('body').append('div');
+            page = d3.select('html');
             $(div.node()).width(640).height(480);
         });
 
+        afterEach(function () {
+            if (p) {
+                p.destroy();
+                p = undefined;
+            }
+            if (div) {
+                $(div.node()).remove();
+            }
+        });
+
         it('should render a canvas and the data/graph tabs', function(done) {
-            $.plot(div.node(), series);
+            p = $.plot(div.node(), series);
 
             setTimeout(function(){
                 var html = $(div.node()).parent().html();
+                var pageHtml = $(page.node()).html();
                 expect(html).toContain("canvas");
-                expect(html).toContain("graphTab");
-                expect(html).toContain("dataTab");
-
+                expect(html).toContain("jquery-flot-graph-tab");
+                expect(html).toContain("jquery-flot-datatable-tab");
+                expect(pageHtml).toContain("jquery-flot-datatable-style");
+                expect($(page.node()).find('#jquery-flot-graph-tab').length).toEqual(1);
                 done();
             }, 500);
+        });
+
+        xit('should render properly when rendered twice', function(done) {
+            p = $.plot(div.node(), series);
+            p.destroy();
+            p = $.plot(div.node(), series);
+
+            setTimeout(function(){
+                var html = $(div.node()).parent().html();
+                var pageHtml = $(page.node()).html();
+                expect(html).toContain("canvas");
+                expect(html).toContain("jquery-flot-graph-tab");
+                expect(html).toContain("jquery-flot-datatable-tab");
+                expect(pageHtml).toContain("jquery-flot-datatable-style");
+                expect($(page.node()).find('#jquery-flot-graph-tab').length).toEqual(1);
+                done();
+            }, 1000);
         });
     });
 });
